@@ -1,1 +1,1 @@
-docker run -d -p 80:80 https
+docker run -d -p 80:80 -p 443:443 --name my-https https
