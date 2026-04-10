@@ -8,7 +8,7 @@ services:
 
   nginx:
     build:
-      context: .
+      context: ./nginx
     container_name: step4-proxy-nginx
     ports:
       - "8080:80"
