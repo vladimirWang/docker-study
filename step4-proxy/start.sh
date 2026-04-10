@@ -1,1 +1,4 @@
-docker run -d -p 80:80 -p 443:443 --name my-proxy
+#!/usr/bin/env bash
+set -euo pipefail
+
+docker compose up -d --build

@@ -1,0 +1,16 @@
+services:
+  server:
+    build:
+      context: ./server
+    container_name: step4-proxy-server
+    expose:
+      - "4000"
+
+  nginx:
+    build:
+      context: .
+    container_name: step4-proxy-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - server
