@@ -3,7 +3,8 @@
 这里的/etc/ssl/cert是以Dockerfile为基准的根目录位置。
 Dockerfile所在的位置为构建上下文，只能访问这里的文件
 
-## 解决通过域名访问成功，但是通过ip失败
-解决方案：
-新增一个ip访问的server块, 用301强制跳转
-![alt text](image-1.png)
+## 要让访问http+ip转发到https+域名的配置方式
+![alt text](image-2.png)
+1. server_name要写ip
+2. ssl证书要配置，否则直接ssl握手失败
+3. ssl握手成功后，走后续的301重定向
