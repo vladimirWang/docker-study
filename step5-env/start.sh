@@ -1,1 +1,1 @@
-docker compose up -d --build
+docker compose up --env-file .env.prod -d --build
