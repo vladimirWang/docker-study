@@ -3,7 +3,7 @@ const app = express();
 
 const port = 4000;
 
-app.get('/api/data', (req, res) => {
+app.get('/echo', (req, res) => {
   res.send('Hello from step5!');
 });
 
