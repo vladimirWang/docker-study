@@ -14,4 +14,6 @@ set -a
 source .env.prod
 set +a
 
-docker exec -i step6-env-mysql mysql -u root -p"${DATABASE_PASSWORD}" "${DATABASE_NAME}" < createUser.sql
+# 勿用 -p"密码"（会触发 CLI 不安全警告）；用 MYSQL_PWD 供客户端读密码
+docker exec -i -e MYSQL_PWD="${DATABASE_PASSWORD}" step6-env-mysql \
+  mysql -u root "${DATABASE_NAME}" < createUser.sql
