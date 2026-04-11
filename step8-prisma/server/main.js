@@ -1,9 +1,8 @@
 import express from "express"
 import dotenv from "dotenv"
 import mysql from "mysql2/promise"
-import * as redisConfig from "./redisClient.js"
-
-const { redisClient, connectRedis } = redisConfig;
+import { redisClient, connectRedis } from "./redisClient.js"
+import prismaClient from "./prismaClient.js"
 await connectRedis()
 
 const app = express();
@@ -41,9 +40,9 @@ app.use(express.json());
 
 app.get("/echo", async (req, res) => {
   try {
-    const [results, fields] = await pool.query("SELECT * FROM `user`");
+    const users = await prismaClient.user.findMany();
 
-    res.json({ data: results, success: true });
+    res.json({ data: users, success: true });
   } catch (err) {
     console.log(err);
     res.json({ error: err.message || "Error", success: false });
@@ -53,12 +52,11 @@ app.get("/echo", async (req, res) => {
 app.post("/user", async (req, res) => {
   try {
     const { username } = req.body;
-    console.log("username: ", username);
-    const [results] = await pool.query(
-      "INSERT INTO `user` (username) VALUES (?)",
-      [username],
-    );
-    res.json({ id: results.insertId, success: true });
+    const result = await prismaClient.user.create({
+      data: { username },
+    });
+
+    res.json({ id: result.id, success: true });
   } catch (err) {
     res.json({ error: err.message || "Error", success: false });
   }

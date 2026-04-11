@@ -8,6 +8,11 @@ COPY package.json pnpm-lock.yaml ./
 
 RUN pnpm install --frozen-lockfile
 
+# 复制 Prisma schema 并生成 client
+COPY prisma ./prisma
+RUN npx prisma db push
+RUN npx prisma generate
+
 COPY . .
 
 CMD ["npm", "run", "start"]
