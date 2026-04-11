@@ -6,3 +6,10 @@ services:
     ports:
       - "80:80"
       - "443:443"
+
+  server:
+    build:
+      context: ./server
+    container_name: step5-env-server
+    expose:
+      - "4000"
