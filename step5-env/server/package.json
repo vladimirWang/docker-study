@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "dev": "npx dotenv -e .env.dev node main.js",
+    "dev": "npx dotenv -e .env.dev nodemon main.js",
     "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,9 +13,11 @@
   "description": "",
   "dependencies": {
     "dotenv": "^17.4.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mysql2": "^3.22.0"
   },
   "devDependencies": {
-    "dotenv-cli": "^11.0.0"
+    "dotenv-cli": "^11.0.0",
+    "nodemon": "^3.1.14"
   }
 }
