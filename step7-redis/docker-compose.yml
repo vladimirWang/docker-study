@@ -27,3 +27,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "${DATABASE_PASSWORD}"
       MYSQL_DATABASE: "${DATABASE_NAME}"
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: step7-redis-redis
+    ports:
+      - "6379:6379"

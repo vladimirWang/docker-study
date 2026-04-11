@@ -1,7 +1,12 @@
-const express = require("express");
+import express from "express"
+import dotenv from "dotenv"
+import mysql from "mysql2/promise"
+import * as redisConfig from "./redisClient.js"
+
+const { redisClient, connectRedis } = redisConfig;
+await connectRedis()
+
 const app = express();
-const dotenv = require("dotenv");
-const mysql = require("mysql2/promise");
 
 // console.log(connection, connection.connect);
 // .connect()
@@ -38,12 +43,10 @@ app.get("/echo", async (req, res) => {
   try {
     const [results, fields] = await pool.query("SELECT * FROM `user`");
 
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
-    res.json({ data: results });
+    res.json({ data: results, success: true });
   } catch (err) {
     console.log(err);
-    res.send("Error: " + err.message);
+    res.json({ error: err.message || "Error", success: false });
   }
 });
 
@@ -55,9 +58,27 @@ app.post("/user", async (req, res) => {
       "INSERT INTO `user` (username) VALUES (?)",
       [username],
     );
-    res.json({ id: results.insertId });
+    res.json({ id: results.insertId, success: true });
   } catch (err) {
-    res.send("Error: " + err.message);
+    res.json({ error: err.message || "Error", success: false });
+  }
+});
+
+app.post("/redis/increment", async (req, res) => {
+  try {
+    const value = await redisClient.incr("count");
+    res.json({ value, success: true });
+  } catch (err) {
+    res.json({ error: "Error: " + err.message, success: false });
+  }
+});
+
+app.get("/redis", async (req, res) => {
+  try {
+    const value = await redisClient.get("count");
+    res.json({ value, success: true });
+  } catch (err) {
+    res.json({ error: "Error: " + err.message, success: false });
   }
 });
 

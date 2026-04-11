@@ -28,6 +28,35 @@ const createUser = async () => {
     alert("request failed: " + JSON.stringify(e));
   }
 };
+
+const count = ref(0);
+const increment = async () => {
+  try {    
+    const resp = await fetch("/api/redis/increment", {
+      method: "POST",
+    });
+    if (!resp.ok) {
+      alert("request failed");
+      return;
+    }
+    alert("count incremented successfully");
+  } catch (e) {
+    alert("request failed: " + JSON.stringify(e));
+  }
+};
+const getCount = async () => {
+  try {    
+    const resp = await fetch("/api/redis");
+    if (!resp.ok) {
+      alert("request failed");
+      return;
+    }
+    const { value } = await resp.json();
+    count.value = value;
+  } catch (e) {
+    alert("request failed: " + JSON.stringify(e));
+  }
+};  
 </script>
 
 <template>
@@ -41,6 +70,11 @@ const createUser = async () => {
     <section>
       <input type="text" v-model="username">
       <button @click="createUser">create user</button>
+    </section>
+    <section>
+      <p>Count: {{ count }}</p>
+      <button @click="getCount">get count</button>
+      <button @click="increment">increment</button>
     </section>
   </div>
 </template>
