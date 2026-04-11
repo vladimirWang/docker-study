@@ -1,26 +1,46 @@
 <script setup>
 import { ref } from 'vue';
 const result = ref("");
-const request = async() => {
+const username = ref("jack");
+const request = async () => {
   try {
     result.value = "requesting..."
-      const resp = await fetch("/api/echo")
-  if (!resp.ok) {
-    alert("request failed");
-    return; 
-  }
-  const data = await resp.text();
-  result.value = data
+    const resp = await fetch("/api/echo")
+    if (!resp.ok) {
+      alert("request failed");
+      return;
+    }
+    const { data } = await resp.json();
+    result.value = data
   } catch (e) {
-    alert("request failed: "+ JSON.stringify(e));
+    alert("request failed: " + JSON.stringify(e));
+  }
+};
+const createUser = async () => {
+  try {
+    const resp = await fetch("/api/user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: username.value }),
+    });
+    alert("user created successfully");
+  } catch (e) {
+    alert("request failed: " + JSON.stringify(e));
   }
 };
 </script>
 
 <template>
-  <div>
-    <h1>Proxy Test</h1>
-    <p>Result: {{ result }}</p>
-    <button @click="request">request</button>
+  <div style="display: flex; flex-direction: row; gap: 10px;">
+    <section>
+      <button @click="request">get users</button>
+      <ul>
+        <li v-for="item in result" :key="item.id">{{ item.username }}</li>
+      </ul>
+    </section>
+    <section>
+      <input type="text" v-model="username">
+      <button @click="createUser">create user</button>
+    </section>
   </div>
 </template>

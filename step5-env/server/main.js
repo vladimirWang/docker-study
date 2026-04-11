@@ -15,26 +15,50 @@ const mysql = require("mysql2/promise");
 // 加载环境变量
 dotenv.config();
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
   host: process.env.DATABASE_HOST,
-  port: process.env.DATABASE_PORT,
+  port: Number(process.env.DATABASE_PORT) || 3306,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
 });
 
-connection
-  .then(() => {
-    console.log("Connected to MySQL successfully");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MySQL", err);
-  });
+pool
+  .query("SELECT 1")
+  .then(() => console.log("MySQL pool ready"))
+  .catch((err) => console.error("MySQL pool error:", err));
 
 const port = 4000;
 
-app.get("/echo", (req, res) => {
-  res.send("Hello from step5! Database host: " + process.env.DATABASE_NAME);
+app.use(express.json());
+
+app.get("/echo", async (req, res) => {
+  try {
+    const [results, fields] = await pool.query("SELECT * FROM `user`");
+
+    console.log(results); // results contains rows returned by server
+    console.log(fields); // fields contains extra meta data about results, if available
+    res.json({ data: results });
+  } catch (err) {
+    console.log(err);
+    res.send("Error: " + err.message);
+  }
+});
+
+app.post("/user", async (req, res) => {
+  try {
+    const { username } = req.body;
+    console.log("username: ", username);
+    const [results] = await pool.query(
+      "INSERT INTO `user` (username) VALUES (?)",
+      [username],
+    );
+    res.json({ id: results.insertId });
+  } catch (err) {
+    res.send("Error: " + err.message);
+  }
 });
 
 app.listen(port, () => {
