@@ -17,6 +17,9 @@ services:
       - "4000"
     env_file:
       - ./server/.env.prod
+    depends_on:
+      - mysql
+      - redis
 
 
   mysql:
