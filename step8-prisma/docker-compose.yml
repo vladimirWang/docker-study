@@ -18,9 +18,10 @@ services:
     env_file:
       - ./server/.env.prod
     depends_on:
-      - mysql
-      - redis
-
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   mysql:
     image: mysql:8.0
@@ -30,6 +31,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "${DATABASE_PASSWORD}"
       MYSQL_DATABASE: "${DATABASE_NAME}"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
 
   redis:
     image: redis:7.0-alpine
