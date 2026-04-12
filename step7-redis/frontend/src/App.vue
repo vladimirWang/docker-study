@@ -23,6 +23,10 @@ const createUser = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: username.value }),
     });
+    if (!resp.ok) {
+      alert("request failed");
+      return;
+    }
     alert("user created successfully");
   } catch (e) {
     alert("request failed: " + JSON.stringify(e));

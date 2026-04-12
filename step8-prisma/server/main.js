@@ -1,9 +1,9 @@
-import express from "express"
-import dotenv from "dotenv"
-import mysql from "mysql2/promise"
-import { redisClient, connectRedis } from "./redisClient.js"
-import prismaClient from "./prismaClient.js"
-await connectRedis()
+import express from "express";
+import mysql from "mysql2/promise";
+import * as redisConfig from "./redisClient.js";
+import prismaClient from "./prismaClient.js";
+
+const { redisClient, connectRedis } = redisConfig;
 
 const app = express();
 
@@ -16,23 +16,6 @@ const app = express();
 //   console.error("Error connecting to MySQL", err);
 // });
 
-// 加载环境变量
-dotenv.config();
-
-const pool = mysql.createPool({
-  host: process.env.DATABASE_HOST,
-  port: Number(process.env.DATABASE_PORT) || 3306,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-});
-
-pool
-  .query("SELECT 1")
-  .then(() => console.log("MySQL pool ready"))
-  .catch((err) => console.error("MySQL pool error:", err));
 
 const port = 4000;
 
@@ -50,6 +33,8 @@ app.get("/echo", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
+  // console.log("Received request to create user", prismaClient.user);
+  // return res.json({ id: 1, success: true });
   try {
     const { username } = req.body;
     const result = await prismaClient.user.create({
