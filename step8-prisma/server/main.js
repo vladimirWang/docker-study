@@ -5,6 +5,14 @@ import prismaClient from "./prismaClient.js";
 
 const { redisClient, connectRedis } = redisConfig;
 
+try {
+  await connectRedis();
+  console.log("Redis connected");
+} catch (err) {
+  console.error("Failed to connect to Redis:", err);
+  process.exit(1);
+}
+
 const app = express();
 
 // console.log(connection, connection.connect);
