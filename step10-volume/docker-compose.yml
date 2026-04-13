@@ -4,6 +4,8 @@ services:
       context: ./nginx
       args:
         NGINX_SITE: prod
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
     ports:
       - "80:80"
       - "443:443"
