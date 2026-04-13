@@ -7,4 +7,4 @@ services:
     build:
       args:
         NGINX_SITE: test
-    container_name: step8-prisma-nginx-test
+    container_name: step9-share443-nginx-test

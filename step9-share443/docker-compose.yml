@@ -4,7 +4,7 @@ services:
       context: ./nginx
       args:
         NGINX_SITE: prod
-    container_name: step8-prisma-nginx
+    container_name: step9-share443-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -14,7 +14,7 @@ services:
   server:
     build:
       context: ./server
-    container_name: step8-prisma-server
+    container_name: step9-share443-server
     expose:
       - "4000"
     env_file:
@@ -27,7 +27,7 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: step8-prisma-mysql
+    container_name: step9-share443-mysql
     ports:
       - "3306:3306"
     environment:
@@ -42,6 +42,6 @@ services:
 
   redis:
     image: redis:7.0-alpine
-    container_name: step8-prisma-redis
+    container_name: step9-share443-redis
     ports:
       - "6379:6379"
