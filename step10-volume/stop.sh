@@ -1,1 +1,1 @@
-docker compose -p step9-prod --env-file ./server/.env.prod down
+docker compose -p step10-volume --env-file ./server/.env.prod down
