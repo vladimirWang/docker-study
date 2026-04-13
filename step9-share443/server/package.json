@@ -4,7 +4,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "dev": "npx dotenv -e .env.dev nodemon main.js",
+    "dev": "npx dotenv -e .env.dev nodemon main.js --",
+    "generate:dev": "npx dotenv -e .env.dev -- prisma generate",
     "start": "npx dotenv -e .env.prod node main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed:dev": "npx dotenv -e .env.dev -- prisma db seed",

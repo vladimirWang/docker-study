@@ -2,6 +2,12 @@ import express from "express";
 import mysql from "mysql2/promise";
 import * as redisConfig from "./redisClient.js";
 import prismaClient from "./prismaClient.js";
+import arg from "arg";
+
+const argv = arg({ "--mode": String, "-m": "--mode" });
+
+// const argv = process.argv.slice(2);
+console.log("argv: ", argv['--mode']);
 
 const { redisClient, connectRedis } = redisConfig;
 
@@ -23,7 +29,6 @@ const app = express();
 // .catch((err) => {
 //   console.error("Error connecting to MySQL", err);
 // });
-
 
 const port = 4000;
 
@@ -74,5 +79,8 @@ app.get("/redis", async (req, res) => {
 });
 
 app.listen(port, () => {
+  // console.log(
+  //   `[server] mode=${mode} (process.env.SERVER_MODE=${process.env.SERVER_MODE})`,
+  // );
   console.log(`Server is running on http://localhost:${port}`);
 });
