@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "npx dotenv -e .env.dev nodemon main.js",
     "start": "npx dotenv -e .env.prod node main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:dev": "npx dotenv -e .env.dev -- prisma db seed",
+    "seed:prod": "npx dotenv -e .env.prod -- prisma db seed"
   },
   "keywords": [],
   "author": "",
