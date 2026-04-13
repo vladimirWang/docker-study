@@ -1,0 +1,10 @@
+# 测试环境：与 docker-compose.yml 联用
+# docker compose -f docker-compose.yml -f docker-compose.test.yml --env-file ./server/.env.prod up -d --build
+# 需在 nginx/ssl/ 放置 test.hetou.vip.pem 与 test.hetou.vip.key
+
+services:
+  nginx:
+    build:
+      args:
+        NGINX_SITE: test
+    container_name: step8-prisma-nginx-test

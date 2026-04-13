@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 const result = ref("");
 const username = ref("jack");
+document.title = `[${process.env.NODE_ENV}]${document.title}`;
 const request = async () => {
   try {
     result.value = "requesting..."
@@ -31,7 +32,7 @@ const createUser = async () => {
 
 const count = ref(0);
 const increment = async () => {
-  try {    
+  try {
     const resp = await fetch("/api/redis/increment", {
       method: "POST",
     });
@@ -45,7 +46,7 @@ const increment = async () => {
   }
 };
 const getCount = async () => {
-  try {    
+  try {
     const resp = await fetch("/api/redis");
     if (!resp.ok) {
       alert("request failed");

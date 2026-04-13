@@ -2,6 +2,8 @@ services:
   nginx:
     build:
       context: ./nginx
+      args:
+        NGINX_SITE: prod
     container_name: step8-prisma-nginx
     ports:
       - "80:80"
