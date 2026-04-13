@@ -5,6 +5,7 @@
 services:
   nginx:
     build:
+      context: ./nginx
       args:
         NGINX_SITE: test
     container_name: step9-share443-nginx-test
