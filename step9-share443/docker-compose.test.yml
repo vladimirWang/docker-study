@@ -8,7 +8,6 @@ services:
       context: ./nginx
       args:
         NGINX_SITE: test
-    container_name: step9-share443-nginx-test
     ports:
       - "8080:80"
       - "8443:443"
@@ -17,7 +16,6 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: step9-share443-mysql-test
     ports:
       - "3307:3306"
     environment:
@@ -34,14 +32,12 @@ services:
 
   redis:
     image: redis:7.0-alpine
-    container_name: step9-share443-redis-test
     ports:
       - "6380:6379"
 
   server:
     build:
       context: ./server
-    container_name: step9-share443-server-test
     expose:
       - "4000"
     env_file:
