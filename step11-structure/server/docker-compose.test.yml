@@ -9,7 +9,7 @@ services:
       args:
         NGINX_SITE: test
     volumes:
-      - ../frontend/dist:/usr/share/nginx/html:ro
+      - ../nginx/html/dist:/usr/share/nginx/html:ro
       - ../nginx/ssl:/etc/ssl/cert:ro
     ports:
       - "8080:80"
