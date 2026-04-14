@@ -1,3 +1,4 @@
+import "./seed-env-preload.js";
 import prisma from "../prismaClient.js";
 
 async function main() {
@@ -16,4 +17,6 @@ async function main() {
     await prisma.$disconnect();
   }
 }
+
 main();
+

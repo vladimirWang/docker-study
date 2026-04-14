@@ -1,12 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "dist/main.js",
   "type": "module",
   "scripts": {
-    "dev": "npx dotenv -e .env.dev nodemon main.js --",
+    "dev": "npx dotenv -e .env.dev -- tsx watch main.ts",
     "generate:dev": "npx dotenv -e .env.dev -- prisma generate",
-    "start": "npx dotenv -e .env.prod node main.js",
+    "build": "tsc -p tsconfig.json",
+    "start": "npx dotenv -e .env.prod -- node dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed:dev": "npx dotenv -e .env.dev -- prisma db seed",
     "seed:prod": "npx dotenv -e .env.prod -- prisma db seed"
@@ -25,8 +26,12 @@
     "mysql2": "^3.22.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.1",
     "dotenv-cli": "^11.0.0",
     "nodemon": "^3.1.14",
-    "prisma": "^7.7.0"
+    "prisma": "^7.7.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
   }
 }
