@@ -5,12 +5,12 @@
 services:
   nginx:
     build:
-      context: ../nginx
+      context: ./nginx
       args:
         NGINX_SITE: test
     volumes:
-      - ../nginx/html/dist:/usr/share/nginx/html:ro
-      - ../nginx/ssl:/etc/ssl/cert:ro
+      - ./nginx/html/dist:/usr/share/nginx/html:ro
+      - ./nginx/ssl:/etc/ssl/cert:ro
     ports:
       - "8080:80"
       - "8443:443"
@@ -19,11 +19,11 @@ services:
 
   server:
     build:
-      context: ../server
+      context: .
     expose:
       - "4000"
     env_file:
-      - ../server/.env.test
+      - ./.env.test
     depends_on:
       mysql:
         condition: service_healthy
