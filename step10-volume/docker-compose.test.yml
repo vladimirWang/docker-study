@@ -17,6 +17,19 @@ services:
     depends_on:
       - server
 
+  server:
+    build:
+      context: ./server
+    expose:
+      - "4000"
+    env_file:
+      - ./server/.env.test
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
   mysql:
     image: mysql:8.0
     ports:
@@ -37,19 +50,10 @@ services:
     image: redis:7.0-alpine
     ports:
       - "6380:6379"
-
-  server:
-    build:
-      context: ./server
-    expose:
-      - "4000"
-    env_file:
-      - ./server/.env.test
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_started
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec"]
+    volumes:
+      - redis_data:/data
 
 volumes:
   mysql_data:
+  redis_data:

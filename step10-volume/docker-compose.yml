@@ -46,6 +46,10 @@ services:
     image: redis:7.0-alpine
     ports:
       - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec"]
+    volumes:
+      - redis_data:/data
 
 volumes:
   mysql_data:
+  redis_data:
