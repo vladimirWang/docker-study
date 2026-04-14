@@ -13,6 +13,10 @@ RUN bun install --frozen-lockfile
 COPY prisma ./prisma
 RUN bunx prisma generate
 
+# 复制入口脚本（位于 deploy/ 目录）
+COPY deploy/docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
+
 # 复制源码
 COPY . .
 
@@ -24,7 +28,5 @@ COPY . .
 # # 使用生产模式运行
 # ENV NODE_ENV=production
 # CMD ["/app/docker-entrypoint.sh"]
-RUN chmod +x docker-entrypoint.sh
-
 ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["npm", "run", "start"]
