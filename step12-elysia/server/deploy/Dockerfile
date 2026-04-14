@@ -29,4 +29,4 @@ COPY . .
 # ENV NODE_ENV=production
 # CMD ["/app/docker-entrypoint.sh"]
 ENTRYPOINT ["./docker-entrypoint.sh"]
-CMD ["npm", "run", "start"]
+CMD ["bun", "run", "src/index.ts"]

@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
 echo "Running prisma migrate deploy..."
-npx prisma migrate deploy
-npx prisma db seed
+bunx prisma migrate deploy
+bunx prisma db seed
 exec "$@"
