@@ -6,6 +6,7 @@ services:
         NGINX_SITE: prod
     volumes:
       - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./ssl:/etc/ssl/cert:ro
     ports:
       - "80:80"
       - "443:443"

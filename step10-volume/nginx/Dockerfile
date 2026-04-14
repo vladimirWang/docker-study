@@ -5,4 +5,4 @@ ARG NGINX_SITE=prod
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./conf.d/${NGINX_SITE}.conf /etc/nginx/conf.d/site.conf
 
-COPY ssl /etc/ssl/cert
+# COPY ssl /etc/ssl/cert
