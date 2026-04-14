@@ -8,13 +8,13 @@ const request = async () => {
     result.value = "requesting..."
     const resp = await fetch("/api/echo")
     if (!resp.ok) {
-      console.log("request failed");
+      alert("request failed");
       return;
     }
     const { data } = await resp.json();
     result.value = data
   } catch (e) {
-    console.log("request failed: " + JSON.stringify(e));
+    alert("request failed: " + JSON.stringify(e));
   }
 };
 const createUser = async () => {
@@ -24,9 +24,9 @@ const createUser = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: username.value }),
     });
-    console.log("user created successfully");
+    alert("user created successfully");
   } catch (e) {
-    console.log("request failed: " + JSON.stringify(e));
+    alert("request failed: " + JSON.stringify(e));
   }
 };
 
@@ -37,25 +37,25 @@ const increment = async () => {
       method: "POST",
     });
     if (!resp.ok) {
-      console.log("request failed");
+      alert("request failed");
       return;
     }
-    console.log("count incremented successfully");
+    alert("count incremented successfully");
   } catch (e) {
-    console.log("request failed: " + JSON.stringify(e));
+    alert("request failed: " + JSON.stringify(e));
   }
 };
 const getCount = async () => {
   try {
     const resp = await fetch("/api/redis");
     if (!resp.ok) {
-      console.log("request failed");
+      alert("request failed");
       return;
     }
     const { value } = await resp.json();
     count.value = value;
   } catch (e) {
-    console.log("request failed: " + JSON.stringify(e));
+    alert("request failed: " + JSON.stringify(e));
   }
 };  
 </script>
