@@ -3,4 +3,4 @@
 
 # cd "$(dirname "$0")"
 # --env-file 必须跟在 docker compose 后面，用于 compose 里 ${DATABASE_*} 等变量替换
-docker compose -p step10-prod -f ../server/docker-compose.yml --env-file ./server/.env.prod up -d --build
+docker compose -p step11-prod -f ../server/docker-compose.yml --env-file ./server/.env.prod up -d --build
