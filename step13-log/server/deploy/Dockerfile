@@ -30,5 +30,6 @@ COPY . .
 # CMD ["/app/docker-entrypoint.sh"]
 ENTRYPOINT ["./docker-entrypoint.sh"]
 # CMD ["bunx", "dotenv", "-e", ".env.prod", "--", "bun", "run", "src/index.ts"]
-CMD ['npm', 'run', 'start']
+# CMD ['npm', 'run', 'start']
+CMD ["bun", "run", "src/index.ts"]
 
