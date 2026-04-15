@@ -27,7 +27,12 @@ function createLogger() {
   const appLogPath = join(logDir, "app.log");
   const errorLogPath = join(logDir, "error.log");
 
-  mkdirSync(logDir, { recursive: true });
+  try {
+    mkdirSync(logDir, { recursive: true });
+    console.log("create log directory success: ", logDir);
+  } catch (error) {
+    console.error("create logger error: ", error);
+  }
 
   const appStream = createWriteStream(appLogPath, { flags: "a" });
   const errorStream = createWriteStream(errorLogPath, { flags: "a" });
