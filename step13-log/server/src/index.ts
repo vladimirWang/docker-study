@@ -4,8 +4,9 @@ import { redisClient, connectRedis } from "./redis";
 import { logger } from "./logger";
 
 const port = Number(process.env.PORT ?? 4000);
-// 在 Docker 中必须监听 0.0.0.0，避免只绑定到 localhost 导致 Nginx 502
-const hostname = process.env.HOSTNAME ?? "0.0.0.0";
+// 注意：Docker 默认会注入 HOSTNAME=<容器id>，不要用它作为 bind host。
+// 用 HOST/BIND_HOST 来控制绑定地址；默认 0.0.0.0 以便其它容器（nginx）可访问。
+const hostname = process.env.BIND_HOST ?? process.env.HOST ?? "0.0.0.0";
 
 await connectRedis();
 
@@ -61,8 +62,7 @@ const app = new Elysia()
   })
   .use(userRouter)
   .use(redisRouter)
-  // .listen({ port, hostname });
-  .listen(port);
+  .listen({ port, hostname });
 
 logger.info(
   { hostname: app.server?.hostname, port: app.server?.port },
