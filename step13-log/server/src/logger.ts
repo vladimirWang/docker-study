@@ -1,57 +1,45 @@
-/**
- * 统一日志工具
- * - development: 输出到控制台，便于调试
- * - prod/staging: 输出到文件 logs/app.log
- */
-
 import pino from "pino";
-import { createWriteStream, mkdirSync } from "fs";
-import { join } from "path";
+import { createWriteStream, mkdirSync } from "node:fs";
+import { join, resolve } from "node:path";
 
 const isDev = process.env.NODE_ENV === "development";
+// const isDev = false;
 
 function createLogger() {
+  const baseOptions: pino.LoggerOptions = {
+    level: process.env.LOG_LEVEL || (isDev ? "debug" : "info"),
+    timestamp: pino.stdTimeFunctions.isoTime,
+    formatters: {
+      level: (label) => ({ level: label }),
+    },
+  };
+
   if (isDev) {
     return pino(
       {
-        level: process.env.LOG_LEVEL || "debug",
-        timestamp: pino.stdTimeFunctions.isoTime,
+        ...baseOptions,
       },
       pino.destination(1),
     );
   }
 
-  const logDir = process.env.LOG_DIR || "logs";
+  const logDir = resolve(process.cwd(), process.env.LOG_DIR || "logs");
   const appLogPath = join(logDir, "app.log");
   const errorLogPath = join(logDir, "error.log");
 
-  try {
-    mkdirSync(logDir, { recursive: true });
-  } catch {
-    /* 目录已存在则忽略 */
-  }
+  mkdirSync(logDir, { recursive: true });
 
   const appStream = createWriteStream(appLogPath, { flags: "a" });
   const errorStream = createWriteStream(errorLogPath, { flags: "a" });
 
-  const logger = pino(
-    {
-      level: process.env.LOG_LEVEL || "info",
-      formatters: {
-        level: (label) => ({ level: label }),
-      },
-      timestamp: pino.stdTimeFunctions.isoTime,
-    },
+  return pino(
+    baseOptions,
     pino.multistream([
+      { stream: process.stdout },
       { stream: appStream },
-      {
-        stream: errorStream,
-        level: "error",
-      },
+      { stream: errorStream, level: "error" },
     ]),
   );
-
-  return logger;
 }
 
 export const logger = createLogger();
