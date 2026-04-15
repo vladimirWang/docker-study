@@ -27,7 +27,7 @@ services:
       redis:
         condition: service_started
     volumes:
-      - ../logs:/app/logs:rw
+      - /var/log/docker-study:/app/logs:rw
 
   mysql:
     image: mysql:8.0
