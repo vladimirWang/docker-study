@@ -18,6 +18,7 @@ const userRouter = new Elysia()
     };
   })
   .post("/user", async ({ body }) => {
+    // throw new Error("test error");
     const { username } = body as { username: string };
     logger.info({ username }, "create user");
     const user = await prisma.user.create({
@@ -47,7 +48,18 @@ const redisRouter = new Elysia()
     };
   });
 
-const app = new Elysia().use(userRouter).use(redisRouter).listen(port);
+const app = new Elysia()
+  .onError(({ code, error, path }) => {
+    console.log("onError: ", code, error, path);
+    logger.error({ code, error, path }, "error");
+    return {
+      success: false,
+      message: "Internal Server Error",
+    };
+  })
+  .use(userRouter)
+  .use(redisRouter)
+  .listen(port);
 
 logger.info(
   { hostname: app.server?.hostname, port: app.server?.port },
