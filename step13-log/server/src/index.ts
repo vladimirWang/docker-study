@@ -3,7 +3,9 @@ import prisma from "./prisma";
 import { redisClient, connectRedis } from "./redis";
 import { logger } from "./logger";
 
-const port = 4000;
+const port = Number(process.env.PORT ?? 4000);
+// 在 Docker 中必须监听 0.0.0.0，避免只绑定到 localhost 导致 Nginx 502
+const hostname = process.env.HOSTNAME ?? "0.0.0.0";
 
 await connectRedis();
 
