@@ -1,0 +1,17 @@
+.env
+.env.dev
+.env.test
+
+# node/bun caches & deps
+node_modules
+.bun
+
+# logs
+logs
+
+# misc
+.DS_Store
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
