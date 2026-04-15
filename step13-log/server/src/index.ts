@@ -61,7 +61,7 @@ const app = new Elysia()
   })
   .use(userRouter)
   .use(redisRouter)
-  .listen(port);
+  .listen({ port, hostname });
 
 logger.info(
   { hostname: app.server?.hostname, port: app.server?.port },
