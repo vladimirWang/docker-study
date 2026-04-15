@@ -3,6 +3,11 @@ import prisma from "./prisma";
 import { redisClient, connectRedis } from "./redis";
 import { logger } from "./logger";
 
+console.log("---------NODE_ENV----------: ", process.env.NODE_ENV);
+logger.info(
+  { env: process.env.NODE_ENV, DATABASE_URL: process.env.DATABASE_URL },
+  "environment variables",
+);
 const port = Number(process.env.PORT ?? 4000);
 // 注意：Docker 默认会注入 HOSTNAME=<容器id>，不要用它作为 bind host。
 // 用 HOST/BIND_HOST 来控制绑定地址；默认 0.0.0.0 以便其它容器（nginx）可访问。
